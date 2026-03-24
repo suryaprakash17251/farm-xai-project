@@ -1,0 +1,112 @@
+"""
+Dataset Explorer page — browse, filter and download the farm dataset.
+"""
+
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+from data.generate_data import ACTION_LABELS, ACTION_COLORS, ACTION_ICONS
+
+
+def render(df: pd.DataFrame):
+    st.markdown("""
+    <div class="main-header">
+        <h1>📋 Dataset Explorer</h1>
+        <p>Browse, filter, and analyze the synthetic farm dataset used to train the model.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Filters ───────────────────────────────────────────────────────────────
+    st.markdown('<p class="section-header">Filters</p>', unsafe_allow_html=True)
+    c1, c2, c3, c4 = st.columns(4)
+
+    with c1:
+        actions = st.multiselect(
+            "Action",
+            options=list(ACTION_LABELS.keys()),
+            default=list(ACTION_LABELS.keys()),
+            format_func=lambda x: f"{ACTION_ICONS[x]} {ACTION_LABELS[x]}"
+        )
+    with c2:
+        crops = st.multiselect("Crop Type", df["crop_type"].unique().tolist(),
+                               default=df["crop_type"].unique().tolist())
+    with c3:
+        regions = st.multiselect("Region", df["region"].unique().tolist(),
+                                 default=df["region"].unique().tolist())
+    with c4:
+        moisture_range = st.slider("Soil Moisture (%)", 0.0, 100.0, (0.0, 100.0))
+
+    filtered = df[
+        df["recommended_action"].isin(actions) &
+        df["crop_type"].isin(crops) &
+        df["region"].isin(regions) &
+        df["soil_moisture"].between(*moisture_range)
+    ].copy()
+
+    filtered["Action"] = filtered["recommended_action"].map(
+        lambda x: f"{ACTION_ICONS[x]} {ACTION_LABELS[x]}"
+    )
+
+    st.markdown(f"**{len(filtered):,}** records match your filters", unsafe_allow_html=False)
+
+    # ── Data table ────────────────────────────────────────────────────────────
+    display_cols = [
+        "crop_type", "region", "soil_type", "soil_moisture", "soil_ph",
+        "nitrogen_level", "temperature", "rainfall_7d", "ndvi_score",
+        "pest_pressure_index", "crop_age_days", "Action"
+    ]
+    st.dataframe(
+        filtered[display_cols].head(200),
+        use_container_width=True,
+        hide_index=True
+    )
+
+    # ── Download ──────────────────────────────────────────────────────────────
+    csv = filtered.to_csv(index=False).encode("utf-8")
+    st.download_button(
+        "⬇️ Download Filtered Data as CSV",
+        data=csv,
+        file_name="farm_data_filtered.csv",
+        mime="text/csv"
+    )
+
+    # ── Quick stats ───────────────────────────────────────────────────────────
+    st.markdown('<p class="section-header">Quick Statistics</p>', unsafe_allow_html=True)
+
+    c1, c2 = st.columns(2)
+    with c1:
+        # Scatter: nitrogen vs phosphorus
+        fig = px.scatter(
+            filtered.sample(min(300, len(filtered)), random_state=1),
+            x="nitrogen_level", y="phosphorus_level",
+            color="Action",
+            color_discrete_map={
+                f"{ACTION_ICONS[k]} {v}": ACTION_COLORS[k]
+                for k, v in ACTION_LABELS.items()
+            },
+            labels={"nitrogen_level": "Nitrogen (kg/ha)", "phosphorus_level": "Phosphorus (kg/ha)"},
+            template="plotly_white", opacity=0.7
+        )
+        fig.update_layout(height=320, margin=dict(t=10))
+        st.plotly_chart(fig, use_container_width=True)
+
+    with c2:
+        # Histogram of NDVI
+        fig2 = px.histogram(
+            filtered, x="ndvi_score", color="Action",
+            color_discrete_map={
+                f"{ACTION_ICONS[k]} {v}": ACTION_COLORS[k]
+                for k, v in ACTION_LABELS.items()
+            },
+            nbins=30, template="plotly_white",
+            labels={"ndvi_score": "NDVI Score"}
+        )
+        fig2.update_layout(height=320, margin=dict(t=10), barmode="overlay")
+        fig2.update_traces(opacity=0.75)
+        st.plotly_chart(fig2, use_container_width=True)
+
+    # ── Summary stats ─────────────────────────────────────────────────────────
+    st.markdown('<p class="section-header">Numeric Summary</p>', unsafe_allow_html=True)
+    num_cols = ["soil_moisture", "soil_ph", "nitrogen_level", "phosphorus_level",
+                "temperature", "rainfall_7d", "ndvi_score", "pest_pressure_index"]
+    st.dataframe(filtered[num_cols].describe().round(2), use_container_width=True)
