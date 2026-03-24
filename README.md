@@ -26,7 +26,7 @@ This project directly mirrors the kind of AI systems built for large-scale farms
 
 ---
 
-## ✨ Features
+##  Features
 
 | Page | Description |
 |------|-------------|
@@ -224,7 +224,7 @@ This makes the decision auditable and trustworthy for agronomists.
 
 ---
 
-## 🗺 Roadmap
+##  Roadmap
 
 - [ ] Connect real IoT sensor APIs for live field data
 - [ ] Add GIS / geospatial map visualisation (GeoPandas + Folium)
