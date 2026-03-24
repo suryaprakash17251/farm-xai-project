@@ -1,4 +1,4 @@
-# 🌾 Farm AI — Explainable Agronomy Recommendation System
+#  Farm AI — Explainable Agronomy Recommendation System
 
 <div align="center">
 
@@ -16,7 +16,7 @@
 
 ---
 
-## 📌 Overview
+##  Overview
 
 Farm AI is a production-grade explainable AI system built for precision agronomy. It takes real-time soil, weather, and crop sensor data as input and recommends the best agronomic action — **Irrigate, Fertilize, Apply Pesticide, Harvest, or No Action** — along with a transparent SHAP-based explanation of *why* the model made that decision.
 
@@ -30,15 +30,15 @@ This project directly mirrors the kind of AI systems built for large-scale farms
 
 | Page | Description |
 |------|-------------|
-| 🏠 **Overview** | Dataset summary, action distribution charts, and model performance metrics |
-| 🔮 **Get Recommendation** | Input field conditions via sliders → instant AI recommendation with confidence scores |
-| 🧠 **Explain Prediction** | SHAP waterfall chart showing exactly why the AI recommended a specific action |
-| 📊 **Model Insights** | Global feature importance, per-class SHAP analysis, and correlation heatmap |
-| 📋 **Dataset Explorer** | Filter, browse, and download the training data |
+|  **Overview** | Dataset summary, action distribution charts, and model performance metrics |
+|  **Get Recommendation** | Input field conditions via sliders → instant AI recommendation with confidence scores |
+|  **Explain Prediction** | SHAP waterfall chart showing exactly why the AI recommended a specific action |
+|  **Model Insights** | Global feature importance, per-class SHAP analysis, and correlation heatmap |
+|  **Dataset Explorer** | Filter, browse, and download the training data |
 
 ---
 
-## 🎬 Demo
+##  Demo
 
 > App screenshot / GIF goes here
 
@@ -49,7 +49,7 @@ streamlit run app.py
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 | Category | Tools |
 |----------|-------|
@@ -63,7 +63,7 @@ streamlit run app.py
 
 ---
 
-## ⚡ Quick Start
+##  Quick Start
 
 ### Prerequisites
 
@@ -95,7 +95,7 @@ The app opens at **http://localhost:8501**
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 farm_xai/
@@ -126,7 +126,7 @@ farm_xai/
 
 ---
 
-## 🤖 How It Works
+##  How It Works
 
 ### 1. Data Pipeline
 
@@ -175,15 +175,15 @@ shap_values = explainer.shap_values(X_input)
 
 | Class | Action | Primary Trigger |
 |-------|--------|----------------|
-| 0 | ✅ No Action | Conditions are optimal |
-| 1 | 💧 Irrigate | Low soil moisture + low rainfall |
-| 2 | 🌱 Fertilize | Low nitrogen or phosphorus levels |
-| 3 | 🐛 Apply Pesticide | High pest pressure index (> 6.0) |
-| 4 | 🌾 Harvest | Mature crop age + high NDVI score |
+| 0 |  No Action | Conditions are optimal |
+| 1 |  Irrigate | Low soil moisture + low rainfall |
+| 2 |  Fertilize | Low nitrogen or phosphorus levels |
+| 3 |  Apply Pesticide | High pest pressure index (> 6.0) |
+| 4 |  Harvest | Mature crop age + high NDVI score |
 
 ---
 
-## 📈 Results
+##  Results
 
 | Metric | Score |
 |--------|-------|
@@ -205,7 +205,7 @@ shap_values = explainer.shap_values(X_input)
 
 ---
 
-## 🔬 Explainability Example
+##  Explainability Example
 
 For a field with:
 - Soil moisture: 18% (very dry)
@@ -213,7 +213,7 @@ For a field with:
 - Nitrogen: 60 kg/ha (adequate)
 - Pest pressure: 1.5 (low)
 
-**Prediction: 💧 Irrigate (91% confidence)**
+**Prediction:  Irrigate (91% confidence)**
 
 SHAP waterfall shows:
 - `soil_moisture = 18%` → large negative push (supports irrigation)
@@ -236,7 +236,7 @@ This makes the decision auditable and trustworthy for agronomists.
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Please open an issue first to discuss any major changes.
 
@@ -250,13 +250,13 @@ git push origin feature/your-feature-name
 
 ---
 
-## 📄 License
+##  License
 
 This project is licensed under the MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-## 🙏 Acknowledgements
+##  Acknowledgements
 
 - [SHAP](https://github.com/shap/shap) — Lundberg & Lee (2017) for the SHAP framework
 - [XGBoost](https://xgboost.readthedocs.io/) — Chen & Guestrin (2016)
@@ -267,8 +267,8 @@ This project is licensed under the MIT License — see [LICENSE](LICENSE) for de
 
 <div align="center">
 
-Built with purpose for **explainable AI in agronomy** 🌱
+Built with purpose for **explainable AI in agronomy** 
 
-*If this project helped you, please consider giving it a ⭐*
+*If this project helped you, please consider giving it a *
 
 </div>
